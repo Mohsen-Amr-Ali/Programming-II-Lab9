@@ -1,6 +1,6 @@
 package Validators;
 
-import models.ValidationResult;
+import Models.ValidationResult;
 
 public class TwentySevenThreadValidator implements Validator {
 

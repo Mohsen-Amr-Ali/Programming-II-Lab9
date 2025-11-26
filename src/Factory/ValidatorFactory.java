@@ -1,6 +1,6 @@
 package Factory;
 
-import validators.*;
+import Validators.*;
 
 public class ValidatorFactory {
 

@@ -1,5 +1,4 @@
-//Represents one specific duplication problem in a row, column, or box.
-package models;
+package Models;
 import java.util.Arrays;
 
 public class Issue {
@@ -10,18 +9,14 @@ public class Issue {
     private final int[] fullArray; // The full row/col/box values
     //all the variables are final because they should not change after creation
 
-    public Issue(String type, int index, int duplicatedValue, int[] fullArray) {
+    public Issue(IssueType type, int index, int duplicatedValue, int[] fullArray) {
         this.type = type;
         this.index = index;
         this.duplicatedValue = duplicatedValue;
         this.fullArray = Arrays.copyOf(fullArray, fullArray.length);
     }
-    public enum IssueType {
-        ROW,
-        COL,
-        BOX
-    }
-    public String getType() {
+
+    public IssueType getType() {
         return type;
     }
 

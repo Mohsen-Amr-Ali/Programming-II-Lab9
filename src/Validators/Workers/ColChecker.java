@@ -1,4 +1,4 @@
-package Validators.workers;
+package Validators.Workers;
 
 public class ColChecker implements Runnable {
 

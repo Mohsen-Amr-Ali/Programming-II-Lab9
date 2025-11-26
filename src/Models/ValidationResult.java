@@ -1,6 +1,4 @@
-//Represents the overall result of validating the Sudoku board, every validator returns one ValidationResult object
-package Validators;
-import Models.Issue;
+package Models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
