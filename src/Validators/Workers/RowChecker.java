@@ -1,4 +1,4 @@
-package Workers;
+package Validators.Workers;
 
 import Models.Issue;
 import Models.IssueType;
