@@ -1,9 +1,25 @@
-package Models;
-
+//Represents the overall result of validating the Sudoku board, every validator returns one ValidationResult object
+package Validators;
+import Models.Issue;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ValidationResult {
-    // TODO: boolean isValid
-    // TODO: List<Issue> issues
-    // TODO: constructor + getters
+
+    private final boolean isValid;
+    private final List<Issue> issues;
+
+    public ValidationResult(boolean isValid, List<Issue> issues) {
+        this.isValid = isValid;
+        this.issues = new ArrayList<>(issues);
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public List<Issue> getIssues() {
+        return Collections.unmodifiableList(issues);
+    }
 }
