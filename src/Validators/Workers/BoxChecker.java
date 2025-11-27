@@ -23,17 +23,22 @@ public class BoxChecker implements Runnable {
         // convert boxIndex (1–9) → start row/col
         int startRow = ((boxIndex - 1) / 3) * 3;
         int startCol = ((boxIndex - 1) % 3) * 3;
-        int k = 0; // index for values array
+
+        int k = 0;
         for (int r = startRow; r < startRow + 3; r++) {
             for (int c = startCol; c < startCol + 3; c++) {
-                int value = board[r][c]; // get the value in the box
-                values[k++] = value; // store value in values array
-                freq[value]++; // increment frequency
-                if (freq[value] == 2) {
-                    Issue issue = new Issue(IssueType.BOX, boxIndex, value, values.clone());
-                    synchronized (sharedIssues) {
-                        sharedIssues.add(issue);
-                    }
+                values[k++] = board[r][c];
+            }
+        }
+
+        // PASS 2: Check for duplicates
+        for (int value : values) {
+            freq[value]++;
+            if (freq[value] == 2) {
+                // Now we pass the fully populated 'values' array
+                Issue issue = new Issue(IssueType.BOX, boxIndex, value, values.clone());
+                synchronized (sharedIssues) {
+                    sharedIssues.add(issue);
                 }
             }
         }
