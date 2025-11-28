@@ -2,6 +2,7 @@ package Validators.Workers;
 
 import Models.Issue;
 import Models.IssueType;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RowChecker implements Runnable {
@@ -20,10 +21,18 @@ public class RowChecker implements Runnable {
     public void run() {
         int[] freq = new int[10]; // index 1-9
 
-        for (int value : board[rowIndex]) {
+        for (int c = 0; c < 9; c++) {
+            int value = board[rowIndex][c];
             freq[value]++;
             if (freq[value] == 2) {
-                Issue issue = new Issue(IssueType.ROW, rowIndex, value, board[rowIndex].clone());
+                List<Integer> duplicateIndices = new ArrayList<>();
+                for (int i = 0; i < 9; i++) {
+                    if (board[rowIndex][i] == value) {
+                        duplicateIndices.add(i + 1);
+                    }
+                }
+                int[] indices = duplicateIndices.stream().mapToInt(i -> i).toArray();
+                Issue issue = new Issue(IssueType.ROW, rowIndex + 1, value, indices);
                 synchronized (sharedIssues) {
                     sharedIssues.add(issue);
                 }

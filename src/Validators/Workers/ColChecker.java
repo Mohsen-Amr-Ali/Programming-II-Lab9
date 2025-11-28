@@ -1,6 +1,7 @@
 package Validators.Workers;
 import Models.Issue;
 import Models.IssueType;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ColChecker implements Runnable {
@@ -19,16 +20,19 @@ public class ColChecker implements Runnable {
     public void run() {
         int[] freq = new int[10]; // index 1–9
 
-        for (int row = 0; row < 9; row++) { // iterate through each row for the given column
-            int value = board[row][colIndex]; // get the value in the current column
+        for (int r = 0; r < 9; r++) { // iterate through each row for the given column
+            int value = board[r][colIndex]; // get the value in the current column
             freq[value]++; // increment frequency
 
             if (freq[value] == 2) {
-                int[] fullColumn = new int[9];
-                for (int r = 0; r < 9; r++) {
-                    fullColumn[r] = board[r][colIndex]; // construct the full column array
+                List<Integer> duplicateIndices = new ArrayList<>();
+                for (int i = 0; i < 9; i++) {
+                    if (board[i][colIndex] == value) {
+                        duplicateIndices.add(i + 1);
+                    }
                 }
-                Issue issue = new Issue(IssueType.COLUMN, colIndex, value, fullColumn);
+                int[] indices = duplicateIndices.stream().mapToInt(i -> i).toArray();
+                Issue issue = new Issue(IssueType.COLUMN, colIndex + 1, value, indices);
                 synchronized (sharedIssues) {
                     sharedIssues.add(issue);
                 }

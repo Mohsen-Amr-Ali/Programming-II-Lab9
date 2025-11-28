@@ -1,0 +1,15 @@
+To compile:
+
+javac Main.java Factory/*.java Models/*.java Validators/*.java Validators/Workers/*.java
+
+=======================
+To create jar:
+
+jar cfm SudokuValidator.jar manifest.txt *.class Factory/*.class Models/*.class Validators/*.class Validators/Workers/*.class
+
+=======================
+To run jar:
+
+java -jar SudokuValidator.jar ..\test-csv-files\row_error.csv 3
+
+but change the file path as necessary
