@@ -20,18 +20,6 @@ public class Issue {
         return type;
     }
 
-    public int getLocationIndex() {
-        return locationIndex;
-    }
-
-    public int getDuplicateValue() {
-        return duplicateValue;
-    }
-
-    public List<Integer> getIndices() {
-        return indices;
-    }
-
     @Override
     public String toString() {
         return type + " " + locationIndex + ", #" + duplicateValue + ", " + indices;
