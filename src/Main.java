@@ -27,6 +27,13 @@ public class Main {
             return;
         }
 
+        // Validate mode is one of the allowed values
+        if (mode != 0 && mode != 3 && mode != 27) {
+            System.out.println("Invalid mode: " + mode);
+            System.out.println("Mode must be 0 (Sequential), 3 (3-Threads), or 27 (27-Threads).");
+            return;
+        }
+
         // 1. Load Board
         System.out.println("Loading board from: " + csvPath);
         int[][] board = BoardLoader.loadCSV(csvPath);
