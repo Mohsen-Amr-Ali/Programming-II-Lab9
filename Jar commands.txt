@@ -1,12 +1,13 @@
 To compile:
 
-javac Main.java Factory/*.java Models/*.java Validators/*.java Validators/Workers/*.java
+cd ./src
+javac -d ../out Main.java Factory/*.java Models/*.java Validators/*.java Validators/Workers/*.java
 
 =======================
 To create jar:
 
-jar cfm SudokuValidator.jar manifest.txt *.class Factory/*.class Models/*.class Validators/*.class Validators/Workers/*.class
-
+cd ../out
+jar cfm SudokuValidator.jar ../src/manifest.txt *.class Factory/*.class Models/*.class Validators/*.class Validators/Workers/*.class
 =======================
 To run jar:
 

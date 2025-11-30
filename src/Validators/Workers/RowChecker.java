@@ -25,15 +25,16 @@ public class RowChecker implements Runnable {
         Map<Integer, List<Integer>> valuePositions = new HashMap<>();
 
         // Single loop: collect positions and create issues immediately upon duplicate detection
-        for (int i = 0; i < 9; i++) {
-            int value = board[rowIndex][i];
+        int[] values = board[rowIndex].clone();
+        int i = 1;
+        for (int value : values) {
             valuePositions.putIfAbsent(value, new ArrayList<>());
             List<Integer> positions = valuePositions.get(value);
-            positions.add(i + 1); // Store 1-indexed position
+            positions.add(i++); // Store 1-indexed position
 
             // Create issue immediately when duplicate is detected (2nd occurrence)
             if (positions.size() == 2) {
-                Issue issue = new Issue(IssueType.ROW, rowIndex + 1, value, new ArrayList<>(positions));
+                Issue issue = new Issue(IssueType.ROW, rowIndex + 1, value, positions);
                 synchronized (sharedIssues) {
                     sharedIssues.add(issue);
                 }

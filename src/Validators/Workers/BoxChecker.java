@@ -39,7 +39,7 @@ public class BoxChecker implements Runnable {
 
                 // Create issue immediately when duplicate is detected (2nd occurrence)
                 if (positions.size() == 2) {
-                    Issue issue = new Issue(IssueType.BOX, boxIndex, value, new ArrayList<>(positions));
+                    Issue issue = new Issue(IssueType.BOX, boxIndex, value, positions);
                     synchronized (sharedIssues) {
                         sharedIssues.add(issue);
                     }

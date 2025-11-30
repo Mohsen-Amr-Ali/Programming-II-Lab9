@@ -107,7 +107,7 @@ public class Main {
             }
         }
         System.out.println("═══════════════════════════════════════════════════════");
-        System.out.println("Validation took: " + (endTime - startTime) / 1_000_000 + " ms");
+        System.out.println("Validation took: " + (endTime - startTime) / 1_000 + " μs");
         System.out.println();
     }
 }

@@ -32,7 +32,7 @@ public class ColChecker implements Runnable {
 
             // Create issue immediately when duplicate is detected (2nd occurrence)
             if (positions.size() == 2) {
-                Issue issue = new Issue(IssueType.COLUMN, colIndex + 1, value, new ArrayList<>(positions));
+                Issue issue = new Issue(IssueType.COLUMN, colIndex + 1, value, positions);
                 synchronized (sharedIssues) {
                     sharedIssues.add(issue);
                 }
