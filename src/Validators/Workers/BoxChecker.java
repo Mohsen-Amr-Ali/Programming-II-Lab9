@@ -2,7 +2,9 @@ package Validators.Workers;
 import Models.Issue;
 import Models.IssueType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BoxChecker implements Runnable {
 
@@ -18,27 +20,26 @@ public class BoxChecker implements Runnable {
 
     @Override
     public void run() {
-        int[] freq = new int[10]; // index 1–9
+        // Map each value to its positions (1-indexed, within the box)
+        Map<Integer, List<Integer>> valuePositions = new HashMap<>();
 
         // convert boxIndex (1–9) → start row/col
         int startRow = ((boxIndex - 1) / 3) * 3;
         int startCol = ((boxIndex - 1) % 3) * 3;
 
-        for (int r = startRow; r < startRow + 3; r++) {
-            for (int c = startCol; c < startCol + 3; c++) {
-                int value = board[r][c];
-                freq[value]++;
-                if (freq[value] == 2) {
-                    List<Integer> duplicateIndices = new ArrayList<>();
-                    for (int br = startRow; br < startRow + 3; br++) {
-                        for (int bc = startCol; bc < startCol + 3; bc++) {
-                            if (board[br][bc] == value) {
-                                duplicateIndices.add((br % 3) * 3 + (bc % 3) + 1);
-                            }
-                        }
-                    }
-                    int[] indices = duplicateIndices.stream().mapToInt(i -> i).toArray();
-                    Issue issue = new Issue(IssueType.BOX, boxIndex, value, indices);
+        // Single loop: collect positions and create issues immediately upon duplicate detection
+        for (int i = startRow; i < startRow + 3; i++) {
+            for (int j = startCol; j < startCol + 3; j++) {
+                int value = board[i][j];
+                valuePositions.putIfAbsent(value, new ArrayList<>());
+                List<Integer> positions = valuePositions.get(value);
+                // Calculate 1-indexed position within the 3x3 box
+                int positionInBox = (i % 3) * 3 + (j % 3) + 1;
+                positions.add(positionInBox);
+
+                // Create issue immediately when duplicate is detected (2nd occurrence)
+                if (positions.size() == 2) {
+                    Issue issue = new Issue(IssueType.BOX, boxIndex, value, new ArrayList<>(positions));
                     synchronized (sharedIssues) {
                         sharedIssues.add(issue);
                     }

@@ -3,7 +3,9 @@ package Validators.Workers;
 import Models.Issue;
 import Models.IssueType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RowChecker implements Runnable {
 
@@ -19,20 +21,19 @@ public class RowChecker implements Runnable {
 
     @Override
     public void run() {
-        int[] freq = new int[10]; // index 1-9
+        // Map each value to its positions (1-indexed)
+        Map<Integer, List<Integer>> valuePositions = new HashMap<>();
 
-        for (int c = 0; c < 9; c++) {
-            int value = board[rowIndex][c];
-            freq[value]++;
-            if (freq[value] == 2) {
-                List<Integer> duplicateIndices = new ArrayList<>();
-                for (int i = 0; i < 9; i++) {
-                    if (board[rowIndex][i] == value) {
-                        duplicateIndices.add(i + 1);
-                    }
-                }
-                int[] indices = duplicateIndices.stream().mapToInt(i -> i).toArray();
-                Issue issue = new Issue(IssueType.ROW, rowIndex + 1, value, indices);
+        // Single loop: collect positions and create issues immediately upon duplicate detection
+        for (int i = 0; i < 9; i++) {
+            int value = board[rowIndex][i];
+            valuePositions.putIfAbsent(value, new ArrayList<>());
+            List<Integer> positions = valuePositions.get(value);
+            positions.add(i + 1); // Store 1-indexed position
+
+            // Create issue immediately when duplicate is detected (2nd occurrence)
+            if (positions.size() == 2) {
+                Issue issue = new Issue(IssueType.ROW, rowIndex + 1, value, new ArrayList<>(positions));
                 synchronized (sharedIssues) {
                     sharedIssues.add(issue);
                 }
